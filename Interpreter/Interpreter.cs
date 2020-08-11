@@ -6,17 +6,13 @@ namespace Interpreter
 {
     public class Interpreter
     {
-        private string Text { get; }
-        private int Position { get; set; }
+        private readonly Lexer _lexer;
         private Token CurrentToken { get; set; }
-        private char? CurrentChar { get; set; }
 
-        public Interpreter(string input)
+        public Interpreter(Lexer lexer)
         {
-            Text = input;
-            Position = 0;
-            CurrentToken = null;
-            CurrentChar = Text[Position];
+            _lexer = lexer;
+            CurrentToken = lexer.GetNextToken();
         }
 
         public void Error()
@@ -24,125 +20,71 @@ namespace Interpreter
             throw new Exception("Error parsing input");
         }
 
-        public void Advance()
-        {
-            Position += 1;
-            if (Position > Text.Length - 1)
-            {
-                CurrentChar = null;
-            }
-            else
-            {
-                CurrentChar = Text[Position];
-            }
-        }
-
-        public void SkipWhitespace()
-        {
-            while (CurrentChar != null && string.IsNullOrWhiteSpace(CurrentChar.ToString()))
-            {
-                Advance();
-            }
-        }
-
-        public int Integer()
-        {
-            var result = string.Empty;
-            while (CurrentChar != null && char.IsDigit((char)CurrentChar))
-            {
-                result += CurrentChar;
-                Advance();
-            }
-            return Convert.ToInt32(result);
-        }
-
-        public Token GetNextToken()
-        {
-            while (CurrentChar != null)
-            {
-                if (char.IsWhiteSpace((char)CurrentChar))
-                {
-                    SkipWhitespace();
-                    continue;
-                }
-                if (char.IsDigit((char)CurrentChar))
-                {
-                    var token = new Token(TokenTypes.Integer, Integer().ToString());
-                    return token;
-                }
-                switch (CurrentChar)
-                {
-                    case '+':
-                        {
-                            var token = new Token(TokenTypes.Plus, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
-                    case '-':
-                        {
-                            var token = new Token(TokenTypes.Minus, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
-                    case '*':
-                        {
-                            var token = new Token(TokenTypes.Multiply, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
-                    case '/':
-                        {
-                            var token = new Token(TokenTypes.Divide, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
-                    case ' ':
-                        {
-                            var token = new Token(TokenTypes.Whitespace, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
-                    default:
-                        Error();
-                        return null;
-                }
-            }
-            return new Token(TokenTypes.EOF, string.Empty);
-        }
-
         public void Eat(string tokenType)
         {
-            if (CurrentToken.Type == tokenType) CurrentToken = GetNextToken();
+            if (CurrentToken.Type == tokenType) CurrentToken = _lexer.GetNextToken();
             else Error();
+        }
+        
+        public int Factor()
+        {
+            var token = CurrentToken;
+            if (token.Type == TokenTypes.Integer)
+            {
+                Eat(TokenTypes.Integer);
+                return token.GetValue();
+            }
+
+            if (token.Type == TokenTypes.LeftParen)
+            {
+                Eat(TokenTypes.LeftParen);
+                var result = Expression();
+                Eat(TokenTypes.RightParen);
+                return result;
+            }
+
+            return 0;
         }
 
         public int Term()
         {
-            var token = CurrentToken;
-            Eat(TokenTypes.Integer);
-            return token.GetValue();
+            var result = Factor();
+            while (CurrentToken.Type == TokenTypes.Multiply || CurrentToken.Type == TokenTypes.Divide)
+            {
+                var token = CurrentToken;
+
+                if (token.Type == TokenTypes.Multiply)
+                {
+                    Eat(token.Type);
+                    result = result * Factor();
+                }
+                else if (token.Type == TokenTypes.Divide)
+                {
+                    Eat(token.Type);
+                    result = result / Factor();
+                }
+            }
+            return result;
+
         }
 
         public int Expression()
         {
-            CurrentToken = GetNextToken();
-
             var result = Term();
-            while (CurrentToken.Type == TokenTypes.Plus || CurrentToken.Type == TokenTypes.Minus)
+            while (CurrentToken.Type == TokenTypes.Addition || CurrentToken.Type == TokenTypes.Subtraction)
             {
                 var token = CurrentToken;
-                if (token.Type == TokenTypes.Plus)
+                if (token.Type == TokenTypes.Addition)
                 {
-                    Eat(TokenTypes.Plus);
+                    Eat(token.Type);
                     result = result + Term();
                 }
-                else if (token.Type == TokenTypes.Minus)
+                else if (token.Type == TokenTypes.Subtraction)
                 {
-                    Eat(TokenTypes.Minus);
+                    Eat(token.Type);
                     result = result - Term();
                 }
             }
-
             return result;
         }
     }

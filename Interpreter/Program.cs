@@ -12,7 +12,8 @@ namespace Interpreter
                 try
                 {
                     var text = Console.ReadLine();
-                    var interpreter = new Interpreter(text);
+                    var lexer = new Lexer(text);
+                    var interpreter = new Interpreter(lexer);
                     var result = interpreter.Expression();
                     Console.WriteLine(result);
                 }
