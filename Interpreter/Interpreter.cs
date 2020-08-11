@@ -116,44 +116,34 @@ namespace Interpreter
             else Error();
         }
 
+        public int Term()
+        {
+            var token = CurrentToken;
+            Eat(TokenTypes.Integer);
+            return token.GetValue();
+        }
+
         public int Expression()
         {
             CurrentToken = GetNextToken();
 
-            var left = CurrentToken;
-            Eat(TokenTypes.Integer);
-
-            var operand = CurrentToken;
-            if (operand.Type == TokenTypes.Plus) Eat(TokenTypes.Plus);
-            if (operand.Type == TokenTypes.Minus) Eat(TokenTypes.Minus);
-            if (operand.Type == TokenTypes.Multiply) Eat(TokenTypes.Multiply);
-            if (operand.Type == TokenTypes.Divide) Eat(TokenTypes.Divide);
-
-            var right = CurrentToken;
-            Eat(TokenTypes.Integer);
-
-            if (operand.Type == TokenTypes.Plus)
+            var result = Term();
+            while (CurrentToken.Type == TokenTypes.Plus || CurrentToken.Type == TokenTypes.Minus)
             {
-                var result = left.GetValue() + right.GetValue();
-                return result;
-            }
-            if (operand.Type == TokenTypes.Minus)
-            {
-                var result = left.GetValue() - right.GetValue();
-                return result;
-            }
-            if (operand.Type == TokenTypes.Multiply)
-            {
-                var result = left.GetValue() * right.GetValue();
-                return result;
-            }
-            if (operand.Type == TokenTypes.Divide)
-            {
-                var result = left.GetValue() / right.GetValue();
-                return result;
+                var token = CurrentToken;
+                if (token.Type == TokenTypes.Plus)
+                {
+                    Eat(TokenTypes.Plus);
+                    result = result + Term();
+                }
+                else if (token.Type == TokenTypes.Minus)
+                {
+                    Eat(TokenTypes.Minus);
+                    result = result - Term();
+                }
             }
 
-            return 0;
+            return result;
         }
     }
 }
