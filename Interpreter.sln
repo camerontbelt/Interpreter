@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter", "Interpreter\Interpreter.csproj", "{26CCE181-1BD5-4E30-92EB-342D796B3957}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interpreter", "Interpreter\Interpreter.csproj", "{26CCE181-1BD5-4E30-92EB-342D796B3957}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter.Test", "Interpreter.Test\Interpreter.Test.csproj", "{3992DE78-51EC-4FF5-A662-2308F276975B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{26CCE181-1BD5-4E30-92EB-342D796B3957}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26CCE181-1BD5-4E30-92EB-342D796B3957}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26CCE181-1BD5-4E30-92EB-342D796B3957}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3992DE78-51EC-4FF5-A662-2308F276975B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3992DE78-51EC-4FF5-A662-2308F276975B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3992DE78-51EC-4FF5-A662-2308F276975B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3992DE78-51EC-4FF5-A662-2308F276975B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

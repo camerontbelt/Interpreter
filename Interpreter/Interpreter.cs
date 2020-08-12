@@ -1,91 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Interpreter
+﻿namespace Interpreter
 {
     public class Interpreter
     {
-        private readonly Lexer _lexer;
-        private Token CurrentToken { get; set; }
+        private readonly Parser _parser;
 
-        public Interpreter(Lexer lexer)
+        public Interpreter(Parser parser)
         {
-            _lexer = lexer;
-            CurrentToken = lexer.GetNextToken();
+            _parser = parser;
         }
 
-        public void Error()
+        public dynamic Interpret()
         {
-            throw new Exception("Error parsing input");
+            var tree = _parser.Parse();
+            return Visit(tree);
         }
 
-        public void Eat(string tokenType)
+        private dynamic Visit(dynamic node)
         {
-            if (CurrentToken.Type == tokenType) CurrentToken = _lexer.GetNextToken();
-            else Error();
-        }
-        
-        public int Factor()
-        {
-            var token = CurrentToken;
-            if (token.Type == TokenTypes.Integer)
+            if (node.GetType() == typeof(BinOp))
             {
-                Eat(TokenTypes.Integer);
-                return token.GetValue();
+                return VisitBinOp(node);
+            }
+            if (node.GetType() == typeof(Token))
+            {
+                return node.GetValue();
+            }
+            return null;
+        }
+
+        private dynamic VisitBinOp(BinOp node)
+        {
+            if (node.Token.Type == TokenTypes.Addition)
+            {
+                return Visit(node.Left) + Visit(node.Right);
+            }
+            else if (node.Token.Type == TokenTypes.Subtraction)
+            {
+                return Visit(node.Left) - Visit(node.Right);
+            }
+            else if (node.Token.Type == TokenTypes.Multiply)
+            {
+                return Visit(node.Left) * Visit(node.Right);
+            }
+            else if (node.Token.Type == TokenTypes.Divide)
+            {
+                return Visit(node.Left) / Visit(node.Right);
             }
 
-            if (token.Type == TokenTypes.LeftParen)
-            {
-                Eat(TokenTypes.LeftParen);
-                var result = Expression();
-                Eat(TokenTypes.RightParen);
-                return result;
-            }
-
-            return 0;
-        }
-
-        public int Term()
-        {
-            var result = Factor();
-            while (CurrentToken.Type == TokenTypes.Multiply || CurrentToken.Type == TokenTypes.Divide)
-            {
-                var token = CurrentToken;
-
-                if (token.Type == TokenTypes.Multiply)
-                {
-                    Eat(token.Type);
-                    result = result * Factor();
-                }
-                else if (token.Type == TokenTypes.Divide)
-                {
-                    Eat(token.Type);
-                    result = result / Factor();
-                }
-            }
-            return result;
-
-        }
-
-        public int Expression()
-        {
-            var result = Term();
-            while (CurrentToken.Type == TokenTypes.Addition || CurrentToken.Type == TokenTypes.Subtraction)
-            {
-                var token = CurrentToken;
-                if (token.Type == TokenTypes.Addition)
-                {
-                    Eat(token.Type);
-                    result = result + Term();
-                }
-                else if (token.Type == TokenTypes.Subtraction)
-                {
-                    Eat(token.Type);
-                    result = result - Term();
-                }
-            }
-            return result;
+            return null;
         }
     }
 }

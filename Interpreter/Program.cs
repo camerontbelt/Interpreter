@@ -8,13 +8,14 @@ namespace Interpreter
         {
             while (true)
             {
-                Console.Write("calc> ");
+                Console.Write("spi> ");
                 try
                 {
                     var text = Console.ReadLine();
                     var lexer = new Lexer(text);
-                    var interpreter = new Interpreter(lexer);
-                    var result = interpreter.Expression();
+                    var parser = new Parser(lexer);
+                    var interpreter = new Interpreter(parser);
+                    var result = interpreter.Interpret();
                     Console.WriteLine(result);
                 }
                 catch (Exception e)
