@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Interpreter
 {
@@ -26,14 +27,26 @@ namespace Interpreter
 
         public dynamic Factor()
         {
+            //factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN
             var token = _currentToken;
-            if (token.Type == TokenTypes.Integer)
+            if (token.Type == TokenTypes.Addition)
+            {
+                Eat(TokenTypes.Addition);
+                var node = new UnaryOp(token, Factor());
+                return node;
+            }
+            else if (token.Type == TokenTypes.Subtraction)
+            {
+                Eat(TokenTypes.Subtraction);
+                var node = new UnaryOp(token, Factor());
+                return node;
+            }
+            else if (token.Type == TokenTypes.Integer)
             {
                 Eat(TokenTypes.Integer);
                 return token;
             }
-
-            if (token.Type == TokenTypes.LeftParen)
+            else if (token.Type == TokenTypes.LeftParen)
             {
                 Eat(TokenTypes.LeftParen);
                 var result = Expression();

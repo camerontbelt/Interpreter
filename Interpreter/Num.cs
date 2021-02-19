@@ -7,12 +7,12 @@ namespace Interpreter
     public class Num : AST
     {
         private readonly Token _token;
-        private int _value;
+        public int value { get; set; }
 
         public Num(Token token)
         {
             _token = token;
-            _value = token.GetValue();
+            value = token.GetValue();
         }
     }
 }
