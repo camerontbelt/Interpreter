@@ -11,7 +11,7 @@ namespace Interpreter.Test
         {
 
             var text = $@"BEGIN
-                            BEGIN
+                            BeGIN
                                 _number := 2;
                                 a := _NumBer;
                                 B := 10 * a + 10 * _NUMBER div 4;
@@ -28,7 +28,7 @@ namespace Interpreter.Test
             var b = interpreter.GlobalScope["b"];
             var c = interpreter.GlobalScope["c"];
             var x = interpreter.GlobalScope["x"];
-            var number = interpreter.GlobalScope["number"];
+            var number = interpreter.GlobalScope["_number"];
             Assert.AreEqual(a, 2);
             Assert.AreEqual(b, 25);
             Assert.AreEqual(c, 27);
