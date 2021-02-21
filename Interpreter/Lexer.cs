@@ -46,6 +46,7 @@ namespace Interpreter
             {
                 "BEGIN" => new Token(TokenTypes.Begin, "BEGIN"),
                 "END" => new Token(TokenTypes.End, "End"),
+                "DIV" => new Token(TokenTypes.Divide, "/"),
                 _ => new Token(TokenTypes.Id, token)
             };
 
