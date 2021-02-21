@@ -3,21 +3,10 @@ using NUnit.Framework;
 namespace Interpreter.Test
 {
     [TestFixture]
-    public class Exercises
+    public class PartNineTests
     {
         [Test]
-        public void Test1()
-        {
-            var fiveToken = new Token(TokenTypes.Integer, "5");
-            var threeToken = new Token(TokenTypes.Integer, "3");
-            var minusToken = new Token(TokenTypes.Subtraction, "-");
-            var result = new BinOp(fiveToken, minusToken, new UnaryOp(minusToken, threeToken));
-            var inter = new Interpreter(null);
-            var a = inter.Visit(result);
-        }
-
-        [Test]
-        public void Test2()
+        public void Part9()
         {
             var lexer = new Lexer("BEGIN a := 2; END.");
             var beginToken = lexer.GetNextToken();
@@ -30,7 +19,7 @@ namespace Interpreter.Test
         }
 
         [Test]
-        public void Part9()
+        public void Part9_Test2()
         {
 
             var text ="BEGIN BEGIN number:= 2; a:= number; b:= 10 * a + 10 * number / 4; c:= a - -b END; x:= 11; END.";
@@ -132,7 +121,7 @@ namespace Interpreter.Test
             var b = interpreter.GlobalScope["b"];
             var c = interpreter.GlobalScope["c"];
             var x = interpreter.GlobalScope["x"];
-            var number = interpreter.GlobalScope["number"];
+            var number = interpreter.GlobalScope["_number"];
             Assert.AreEqual(a,2);
             Assert.AreEqual(b,25);
             Assert.AreEqual(c,27);

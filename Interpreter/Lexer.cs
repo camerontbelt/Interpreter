@@ -30,7 +30,7 @@ namespace Interpreter
         public dynamic Id()
         {
             var result = string.Empty;
-            while (CurrentChar != null && char.IsLetterOrDigit(CurrentChar.GetValueOrDefault()))
+            while (CurrentChar != null && char.IsLetterOrDigit(CurrentChar.GetValueOrDefault()) || CurrentChar.GetValueOrDefault() == '_')
             {
                 result += CurrentChar;
                 Advance();
@@ -89,7 +89,7 @@ namespace Interpreter
         {
             while (CurrentChar != null)
             {
-                if (char.IsLetter((char) CurrentChar))
+                if (char.IsLetter((char) CurrentChar) || CurrentChar == '_')
                 {
                     return Id();
                 }
