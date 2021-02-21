@@ -16,9 +16,40 @@ namespace Interpreter
             CurrentChar = Text[Position];
         }
 
+        public char Peek()
+        {
+            var peekPosition = Position + 1;
+            return peekPosition > Text.Length - 1 ? char.MinValue : Text[peekPosition];
+        }
+
         public void Error()
         {
             throw new Exception("Error parsing input");
+        }
+
+        public dynamic Id()
+        {
+            var result = string.Empty;
+            while (CurrentChar != null && char.IsLetterOrDigit(CurrentChar.GetValueOrDefault()))
+            {
+                result += CurrentChar;
+                Advance();
+            }
+
+            var token = GetReservedKeywords(result);
+            return token;
+        }
+
+        private Token GetReservedKeywords(string token)
+        {
+            var result = token.ToUpper() switch
+            {
+                "BEGIN" => new Token(TokenTypes.Begin, "BEGIN"),
+                "END" => new Token(TokenTypes.End, "End"),
+                _ => new Token(TokenTypes.Id, token)
+            };
+
+            return result;
         }
 
         public void Advance()
@@ -57,6 +88,10 @@ namespace Interpreter
         {
             while (CurrentChar != null)
             {
+                if (char.IsLetter((char) CurrentChar))
+                {
+                    return Id();
+                }
                 if (char.IsWhiteSpace((char)CurrentChar))
                 {
                     SkipWhitespace();
@@ -111,6 +146,20 @@ namespace Interpreter
                             Advance();
                             return token;
                         }
+                    case ':':
+                        if (Peek() == '=')
+                        {
+                            Advance();
+                            Advance();
+                            return new Token(TokenTypes.Assign, ":=");
+                        }
+                        break;
+                    case ';':
+                        Advance();
+                        return new Token(TokenTypes.Semi, ";");
+                    case '.':
+                        Advance();
+                        return new Token(TokenTypes.Dot, ".");
                     default:
                         Error();
                         return null;

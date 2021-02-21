@@ -15,5 +15,11 @@ namespace Interpreter
         public static string EOF = "EOF";
         public static string LeftParen = "LeftParen";
         public static string RightParen = "RightParen";
+        public static string Id = "ID";
+        public static string Begin = "BEGIN";
+        public static string End = "END";
+        public static string Assign = "ASSIGN";
+        public static string Semi = "SEMI";
+        public static string Dot = "DOT";
     }
 }

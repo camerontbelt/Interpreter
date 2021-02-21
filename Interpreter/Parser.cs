@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Interpreter
@@ -53,8 +54,90 @@ namespace Interpreter
                 Eat(TokenTypes.RightParen);
                 return result;
             }
+            else
+            {
+                var node = Variable();
+                return node;
+            }
+        }
 
-            return null;
+        public dynamic Program()
+        {
+            var node = CompoundStatement();
+            Eat(TokenTypes.Dot);
+            return node;
+        }
+
+        private dynamic CompoundStatement()
+        {
+            Eat(TokenTypes.Begin);
+            var nodes = StatementList();
+            Eat(TokenTypes.End);
+            var root = new Compound();
+            foreach (var node in nodes)
+            {
+                root.Children.Add(node);
+            }
+
+            return root;
+        }
+
+        private IEnumerable<dynamic> StatementList()
+        {
+            var node = Statement();
+            var result = new List<dynamic> {node};
+            while (_currentToken.Type == TokenTypes.Semi)
+            {
+                Eat(TokenTypes.Semi);
+                result.Add(Statement());
+            }
+            if (_currentToken.Type == TokenTypes.Id)
+            {
+                Error();
+            }
+
+            return result;
+        }
+
+        private dynamic Statement()
+        {
+            dynamic node;
+            if (_currentToken.Type == TokenTypes.Begin)
+            {
+                node = CompoundStatement();
+            } 
+            else if (_currentToken.Type == TokenTypes.Id)
+            {
+                node = AssignmentStatement();
+            }
+            else
+            {
+                node = Empty();
+            }
+
+            return node;
+        }
+
+        private dynamic AssignmentStatement()
+        {
+            var left = Variable();
+            var token = _currentToken;
+            Eat(TokenTypes.Assign);
+            var right = Expression();
+            var node = new Assign(left, token, right);
+            return node;
+        }
+
+        private dynamic Variable()
+        {
+            var node = new Var(_currentToken);
+            Eat(TokenTypes.Id);
+            return node;
+        }
+
+        private dynamic Empty()
+        {
+            return new NoOp();
         }
 
         public dynamic Term()
@@ -67,12 +150,10 @@ namespace Interpreter
                 if (token.Type == TokenTypes.Multiply)
                 {
                     Eat(token.Type);
-                    //result = result * Factor();
                 }
                 else if (token.Type == TokenTypes.Divide)
                 {
                     Eat(token.Type);
-                    //result = result / Factor();
                 }
 
                 node = new BinOp(node, token, Factor());
@@ -90,12 +171,10 @@ namespace Interpreter
                 if (token.Type == TokenTypes.Addition)
                 {
                     Eat(token.Type);
-                    //result = result + Term();
                 }
                 else if (token.Type == TokenTypes.Subtraction)
                 {
                     Eat(token.Type);
-                    //result = result - Term();
                 }
 
                 node = new BinOp(node, token, Term());
@@ -105,7 +184,9 @@ namespace Interpreter
 
         public dynamic Parse()
         {
-            return Expression();
+            var node = Program();
+            if(_currentToken.Type != TokenTypes.EOF) Error();
+            return node;
         }
     }
 }

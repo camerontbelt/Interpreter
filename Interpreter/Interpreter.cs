@@ -1,10 +1,13 @@
-﻿using System.Xml;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace Interpreter
 {
     public class Interpreter
     {
         private readonly Parser _parser;
+        public Dictionary<dynamic, dynamic> GlobalScope = new Dictionary<dynamic, dynamic>();
 
         public Interpreter(Parser parser)
         {
@@ -35,12 +38,60 @@ namespace Interpreter
             {
                 return VisitNum(node);
             }
+            if (node.GetType() == typeof(Compound))
+            {
+                VisitCompound(node);
+            }
+            if (node.GetType() == typeof(Assign))
+            {
+                VisitAssign(node);
+            }
+            if (node.GetType() == typeof(Var))
+            {
+                return VisitVar(node);
+            }
+            if (node.GetType() == typeof(NoOp))
+            {
+                VisitNoOp(node);
+            }
             return null;
+        }
+
+        private void VisitCompound(dynamic node)
+        {
+            foreach (var child in node.Children)
+            {
+                Visit(child);
+            }
+        }
+
+        private void VisitAssign(dynamic node)
+        {
+            var varName = node.Left.Value;
+            GlobalScope.Add(varName.ToLower(), Visit(node.Right));
+        }
+
+        private dynamic VisitVar(dynamic node)
+        {
+            var varName = node.Value;
+            var value = GlobalScope[varName.ToLower()];
+            if (value == null)
+            {
+                throw new Exception($"Name Error Exception {varName}");
+            }
+            else
+            {
+                return value;
+            }
+        }
+
+        private void VisitNoOp(dynamic node)
+        {
         }
 
         private dynamic VisitNum(dynamic node)
         {
-            return node.value;
+            return node.Value;
         }
 
         private dynamic VisitBinOp(dynamic node)
