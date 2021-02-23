@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Interpreter
+namespace Interpreter.Nodes
 {
     public class Token
     {
@@ -20,7 +18,7 @@ namespace Interpreter
             return $"Token({Type}, {Value})";
         }
 
-        public int GetValue()
+        public dynamic GetValue()
         {
             if (Type == TokenTypes.Integer || Type == TokenTypes.IntegerConst) return Convert.ToInt32(Value);
             if (Type == TokenTypes.Real || Type == TokenTypes.RealConst) return Convert.ToDecimal(Value);

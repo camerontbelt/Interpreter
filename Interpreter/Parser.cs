@@ -10,6 +10,8 @@ namespace Interpreter
         private readonly Lexer _lexer;
         private Token _currentToken;
 
+        public static object Default { get; internal set; }
+
         public Parser(Lexer lexer)
         {
             _lexer = lexer;
