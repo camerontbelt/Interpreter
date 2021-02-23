@@ -7,7 +7,7 @@ namespace Interpreter
     public class Num : AST
     {
         private readonly Token _token;
-        public int Value { get; set; }
+        public dynamic Value { get; set; }
 
         public Num(Token token)
         {

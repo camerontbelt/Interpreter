@@ -7,9 +7,9 @@ namespace Interpreter
     public class Token
     {
         public string Type { get; }
-        public string Value { get; }
+        public dynamic Value { get; }
 
-        public Token(string type, string value)
+        public Token(string type, dynamic value)
         {
             Type = type;
             Value = value;
@@ -22,7 +22,8 @@ namespace Interpreter
 
         public int GetValue()
         {
-            if (Type == TokenTypes.Integer) return Convert.ToInt32(Value);
+            if (Type == TokenTypes.Integer || Type == TokenTypes.IntegerConst) return Convert.ToInt32(Value);
+            if (Type == TokenTypes.Real || Type == TokenTypes.RealConst) return Convert.ToDecimal(Value);
             return 0;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Interpreter
 {
@@ -44,9 +45,13 @@ namespace Interpreter
         {
             var result = token.ToUpper() switch
             {
+                "PROGRAM" => new Token(TokenTypes.Program, "BEGIN"),
+                "VAR" => new Token(TokenTypes.Var, "BEGIN"),
+                "INTEGER" => new Token(TokenTypes.Integer, "BEGIN"),
+                "REAL" => new Token(TokenTypes.Real, "BEGIN"),
                 "BEGIN" => new Token(TokenTypes.Begin, "BEGIN"),
                 "END" => new Token(TokenTypes.End, "End"),
-                "DIV" => new Token(TokenTypes.Divide, "/"),
+                "DIV" => new Token(TokenTypes.IntegerDivide, "DIV"),
                 _ => new Token(TokenTypes.Id, token)
             };
 
@@ -74,15 +79,45 @@ namespace Interpreter
             }
         }
 
-        public int Integer()
+        public void SkipComment()
+        {
+            while (CurrentChar != '}')
+            {
+                Advance();
+            }
+            Advance();
+        }
+
+        public Token Number()
         {
             var result = string.Empty;
+            Token token;
             while (CurrentChar != null && char.IsDigit((char)CurrentChar))
             {
                 result += CurrentChar;
                 Advance();
             }
-            return Convert.ToInt32(result);
+
+            if (CurrentChar == '.')
+            {
+                result += CurrentChar;
+                Advance();
+
+                while (CurrentChar != null && char.IsDigit((char)CurrentChar))
+                {
+                    result += CurrentChar;
+                    Advance();
+                }
+
+                token = new Token(TokenTypes.RealConst, Convert.ToDecimal(result));
+
+            }
+            else
+            {
+                token = new Token(TokenTypes.IntegerConst, Convert.ToInt32(result));
+            }
+
+            return token;
         }
 
         public Token GetNextToken()
@@ -100,11 +135,15 @@ namespace Interpreter
                 }
                 if (char.IsDigit((char)CurrentChar))
                 {
-                    var token = new Token(TokenTypes.Integer, Integer().ToString());
+                    var token = Number();
                     return token;
                 }
                 switch (CurrentChar)
                 {
+                    case '{':
+                        Advance();
+                        SkipComment();
+                        continue;
                     case '+':
                         {
                             var token = new Token(TokenTypes.Addition, CurrentChar.ToString());
@@ -125,7 +164,7 @@ namespace Interpreter
                         }
                     case '/':
                         {
-                            var token = new Token(TokenTypes.Divide, CurrentChar.ToString());
+                            var token = new Token(TokenTypes.FloatDivide, CurrentChar.ToString());
                             Advance();
                             return token;
                         }
@@ -154,7 +193,14 @@ namespace Interpreter
                             Advance();
                             return new Token(TokenTypes.Assign, ":=");
                         }
-                        break;
+                        else
+                        {
+                            Advance();
+                            return new Token(TokenTypes.Colon, CurrentChar.ToString());
+                        }
+                    case ',':
+                        Advance();
+                        return new Token(TokenTypes.Comma, CurrentChar.ToString());
                     case ';':
                         Advance();
                         return new Token(TokenTypes.Semi, ";");
