@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 namespace Interpreter
 {
     public class Lexer
     {
-        private string Text { get; }
-        private int Position { get; set; }
-        private char? CurrentChar { get; set; }
-
         public Lexer(string input)
         {
-
             Text = input;
             Position = 0;
             CurrentChar = Text[Position];
         }
+
+        private string Text { get; }
+        private int Position { get; set; }
+        private char? CurrentChar { get; set; }
 
         public char Peek()
         {
@@ -31,7 +29,8 @@ namespace Interpreter
         public dynamic Id()
         {
             var result = string.Empty;
-            while (CurrentChar != null && char.IsLetterOrDigit(CurrentChar.GetValueOrDefault()) || CurrentChar.GetValueOrDefault() == '_')
+            while (CurrentChar != null && char.IsLetterOrDigit(CurrentChar.GetValueOrDefault()) ||
+                   CurrentChar.GetValueOrDefault() == '_')
             {
                 result += CurrentChar;
                 Advance();
@@ -62,29 +61,19 @@ namespace Interpreter
         {
             Position += 1;
             if (Position > Text.Length - 1)
-            {
                 CurrentChar = null;
-            }
             else
-            {
                 CurrentChar = Text[Position];
-            }
         }
 
         public void SkipWhitespace()
         {
-            while (CurrentChar != null && string.IsNullOrWhiteSpace(CurrentChar.ToString()))
-            {
-                Advance();
-            }
+            while (CurrentChar != null && string.IsNullOrWhiteSpace(CurrentChar.ToString())) Advance();
         }
 
         public void SkipComment()
         {
-            while (CurrentChar != '}')
-            {
-                Advance();
-            }
+            while (CurrentChar != '}') Advance();
             Advance();
         }
 
@@ -92,7 +81,7 @@ namespace Interpreter
         {
             var result = string.Empty;
             Token token;
-            while (CurrentChar != null && char.IsDigit((char)CurrentChar))
+            while (CurrentChar != null && char.IsDigit((char) CurrentChar))
             {
                 result += CurrentChar;
                 Advance();
@@ -103,14 +92,13 @@ namespace Interpreter
                 result += CurrentChar;
                 Advance();
 
-                while (CurrentChar != null && char.IsDigit((char)CurrentChar))
+                while (CurrentChar != null && char.IsDigit((char) CurrentChar))
                 {
                     result += CurrentChar;
                     Advance();
                 }
 
                 token = new Token(TokenTypes.RealConst, Convert.ToDecimal(result));
-
             }
             else
             {
@@ -124,20 +112,19 @@ namespace Interpreter
         {
             while (CurrentChar != null)
             {
-                if (char.IsLetter((char) CurrentChar) || CurrentChar == '_')
-                {
-                    return Id();
-                }
-                if (char.IsWhiteSpace((char)CurrentChar))
+                if (char.IsLetter((char) CurrentChar) || CurrentChar == '_') return Id();
+                if (char.IsWhiteSpace((char) CurrentChar))
                 {
                     SkipWhitespace();
                     continue;
                 }
-                if (char.IsDigit((char)CurrentChar))
+
+                if (char.IsDigit((char) CurrentChar))
                 {
                     var token = Number();
                     return token;
                 }
+
                 switch (CurrentChar)
                 {
                     case '{':
@@ -145,47 +132,47 @@ namespace Interpreter
                         SkipComment();
                         continue;
                     case '+':
-                        {
-                            var token = new Token(TokenTypes.Addition, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
+                    {
+                        var token = new Token(TokenTypes.Addition, CurrentChar.ToString());
+                        Advance();
+                        return token;
+                    }
                     case '-':
-                        {
-                            var token = new Token(TokenTypes.Subtraction, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
+                    {
+                        var token = new Token(TokenTypes.Subtraction, CurrentChar.ToString());
+                        Advance();
+                        return token;
+                    }
                     case '*':
-                        {
-                            var token = new Token(TokenTypes.Multiply, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
+                    {
+                        var token = new Token(TokenTypes.Multiply, CurrentChar.ToString());
+                        Advance();
+                        return token;
+                    }
                     case '/':
-                        {
-                            var token = new Token(TokenTypes.FloatDivide, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
+                    {
+                        var token = new Token(TokenTypes.FloatDivide, CurrentChar.ToString());
+                        Advance();
+                        return token;
+                    }
                     case ' ':
-                        {
-                            var token = new Token(TokenTypes.Whitespace, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
+                    {
+                        var token = new Token(TokenTypes.Whitespace, CurrentChar.ToString());
+                        Advance();
+                        return token;
+                    }
                     case '(':
-                        {
-                            var token = new Token(TokenTypes.LeftParen, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
+                    {
+                        var token = new Token(TokenTypes.LeftParen, CurrentChar.ToString());
+                        Advance();
+                        return token;
+                    }
                     case ')':
-                        {
-                            var token = new Token(TokenTypes.RightParen, CurrentChar.ToString());
-                            Advance();
-                            return token;
-                        }
+                    {
+                        var token = new Token(TokenTypes.RightParen, CurrentChar.ToString());
+                        Advance();
+                        return token;
+                    }
                     case ':':
                         if (Peek() == '=')
                         {
@@ -212,6 +199,7 @@ namespace Interpreter
                         return null;
                 }
             }
+
             return new Token(TokenTypes.EOF, string.Empty);
         }
     }
