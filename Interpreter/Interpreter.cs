@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using Interpreter.Nodes;
+using Type = Interpreter.Nodes.Type;
 
 namespace Interpreter
 {
@@ -54,7 +56,47 @@ namespace Interpreter
             {
                 VisitNoOp(node);
             }
+            if (node.GetType() == typeof(Nodes.Program))
+            {
+                VisitProgram(node);
+            }
+            if (node.GetType() == typeof(Block))
+            {
+                VisitBlock(node);
+            }
+            if (node.GetType() == typeof(VarDeclaration))
+            {
+                VisitVarDeclaration(node);
+            }
+            if (node.GetType() == typeof(Type))
+            {
+                VisitType(node);
+            }
             return null;
+        }
+
+        private void VisitType(dynamic node)
+        {
+            return;
+        }
+
+        private void VisitVarDeclaration(dynamic node)
+        {
+            return;
+        }
+
+        private void VisitBlock(dynamic node)
+        {
+            foreach (var declaration in node.Declarations)
+            {
+                Visit(declaration);
+            }
+            VisitCompound(node.CompoundStatement);
+        }
+
+        private void VisitProgram(dynamic node)
+        {
+            Visit(node.Block);
         }
 
         private void VisitCompound(dynamic node)
@@ -110,9 +152,13 @@ namespace Interpreter
             {
                 return Visit(node.Left) * Visit(node.Right);
             }
-            else if (node.Token.Type == TokenTypes.Divide)
+            else if (node.Token.Type == TokenTypes.IntegerDivide)
             {
                 return Visit(node.Left) / Visit(node.Right);
+            }
+            else if (node.Token.Type == TokenTypes.FloatDivide)
+            {
+                return (decimal)Visit(node.Left) / (decimal)Visit(node.Right);
             }
 
             return null;

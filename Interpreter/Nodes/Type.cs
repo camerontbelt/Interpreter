@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Interpreter
+namespace Interpreter.Nodes
 {
-    public class Var : AST
+    public class Type : AST
     {
-        public Var(Token token)
+        public dynamic Token { get; }
+        public dynamic Value { get; }
+
+        public Type(Token token)
         {
             Token = token;
             Value = token.Value;
         }
-
-        public string Value { get; set; }
-        public Token Token { get; set; }
     }
 }
