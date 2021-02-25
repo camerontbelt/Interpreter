@@ -14,5 +14,10 @@ namespace Interpreter
             Name = name;
             Type = type;
         }
+
+        public override string ToString()
+        {
+            return $"<{Name} : {Type}>";
+        }
     }
 }

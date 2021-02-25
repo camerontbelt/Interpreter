@@ -29,7 +29,7 @@ namespace Interpreter
 
         public void Define(Symbol symbol)
         {
-            Console.WriteLine($"Define: {symbol.Type}");
+            Console.WriteLine($"Define: {symbol}");
             Symbols.Add(symbol);
         }
 
