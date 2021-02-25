@@ -1,4 +1,5 @@
 ﻿using System;
+using Interpreter.Core;
 using NUnit.Framework;
 
 namespace Interpreter.Test
@@ -111,7 +112,7 @@ namespace Interpreter.Test
             var tree = parser.Parse();
             var symbolTableBuilder = new SymbolTableBuilder();
             symbolTableBuilder.Visit(tree);
-            var interpreter = new Interpreter();
+            var interpreter = new Core.Interpreter();
             interpreter.Interpret(tree);
             var a = interpreter.GlobalScope["a"];
             var number = interpreter.GlobalScope["number"];

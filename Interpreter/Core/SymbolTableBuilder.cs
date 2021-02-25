@@ -1,6 +1,6 @@
 ﻿using Interpreter.Nodes;
 
-namespace Interpreter
+namespace Interpreter.Core
 {
     public class SymbolTableBuilder : INodeVisitor
     {

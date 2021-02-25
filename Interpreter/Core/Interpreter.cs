@@ -1,9 +1,9 @@
-﻿using Interpreter.Nodes;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Interpreter.Nodes;
 using Type = Interpreter.Nodes.Type;
 
-namespace Interpreter
+namespace Interpreter.Core
 {
     public class Interpreter : INodeVisitor
     {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using CommandLine;
+using Interpreter.Core;
+using Parser = Interpreter.Core.Parser;
 
 namespace Interpreter
 {
@@ -22,7 +24,7 @@ namespace Interpreter
                             var tree = parser.Parse();
                             var symbolTableBuilder = new SymbolTableBuilder();
                             symbolTableBuilder.Visit(tree);
-                            var interpreter = new Interpreter();
+                            var interpreter = new Core.Interpreter();
                             interpreter.Interpret(tree);
                             foreach (var value in interpreter.GlobalScope)
                             {
