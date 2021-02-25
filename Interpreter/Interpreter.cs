@@ -1,24 +1,20 @@
-﻿using System;
+﻿using Interpreter.Nodes;
+using System;
 using System.Collections.Generic;
-using System.Xml;
-using Interpreter.Nodes;
 using Type = Interpreter.Nodes.Type;
 
 namespace Interpreter
 {
-    public class Interpreter
+    public class Interpreter : INodeVisitor
     {
-        private readonly Parser _parser;
         public Dictionary<dynamic, dynamic> GlobalScope = new Dictionary<dynamic, dynamic>();
 
-        public Interpreter(Parser parser)
+        public Interpreter()
         {
-            _parser = parser;
         }
 
-        public dynamic Interpret()
+        public dynamic Interpret(dynamic tree)
         {
-            var tree = _parser.Parse();
             return Visit(tree);
         }
 

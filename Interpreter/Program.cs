@@ -19,8 +19,11 @@ namespace Interpreter
                             var text = File.ReadAllText(o.FilePath);
                             var lexer = new Lexer(text);
                             var parser = new Parser(lexer);
-                            var interpreter = new Interpreter(parser);
-                            var result = interpreter.Interpret();
+                            var tree = parser.Parse();
+                            var symbolTableBuilder = new SymbolTableBuilder();
+                            symbolTableBuilder.Visit(tree);
+                            var interpreter = new Interpreter();
+                            interpreter.Interpret(tree);
                             foreach (var value in interpreter.GlobalScope)
                             {
                                 Console.WriteLine($"{value.Key} = {value.Value}");

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Interpreter.Nodes
+﻿namespace Interpreter.Nodes
 {
     public class VarDeclaration : AST
     {
