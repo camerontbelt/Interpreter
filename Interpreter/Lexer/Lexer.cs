@@ -24,7 +24,7 @@ namespace Interpreter.Lexer
 
         public void Error()
         {
-            throw new Exception("Error parsing input");
+            throw new Exception("Lexer - Error parsing input");
         }
 
         public dynamic Id()

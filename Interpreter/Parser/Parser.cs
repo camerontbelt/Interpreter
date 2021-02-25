@@ -9,9 +9,7 @@ namespace Interpreter.Parser
     {
         private readonly Lexer.Lexer _lexer;
         private Token _currentToken;
-
-        public static object Default { get; internal set; }
-
+        
         public Parser(Lexer.Lexer lexer)
         {
             _lexer = lexer;
@@ -111,7 +109,7 @@ namespace Interpreter.Parser
 
         private void Error()
         {
-            throw new Exception("Error parsing input");
+            throw new Exception("Parser - Error parsing input");
         }
 
         private void Eat(string tokenType)
@@ -131,29 +129,33 @@ namespace Interpreter.Parser
         private dynamic Declarations()
         {
             var declarations = new List<dynamic>();
-            if (_currentToken.Type == TokenTypes.Var)
+            while (true)
             {
-                Eat(TokenTypes.Var);
-                while (_currentToken.Type == TokenTypes.Id)
+
+                if (_currentToken.Type == TokenTypes.Var)
                 {
-                    var varDeclaration = VariableDeclaration();
-                    declarations.Add(varDeclaration);
+                    Eat(TokenTypes.Var);
+                    while (_currentToken.Type == TokenTypes.Id)
+                    {
+                        var varDeclaration = VariableDeclaration();
+                        declarations.Add(varDeclaration);
+                        Eat(TokenTypes.Semi);
+                    }
+                }
+
+                else if (_currentToken.Type == TokenTypes.Procedure)
+                {
+                    Eat(TokenTypes.Procedure);
+                    var procedureName = _currentToken.Value;
+                    Eat(TokenTypes.Id);
+                    Eat(TokenTypes.Semi);
+                    var blockNode = Block();
+                    var procedureDeclaration = new ProcedureDeclaration(procedureName, blockNode);
+                    declarations.Add(procedureDeclaration);
                     Eat(TokenTypes.Semi);
                 }
+                else break;
             }
-
-            while (_currentToken.Type == TokenTypes.Procedure)
-            {
-                Eat(TokenTypes.Procedure);
-                var procedureName = _currentToken.Value;
-                Eat(TokenTypes.Id);
-                Eat(TokenTypes.Semi);
-                var blockNode = Block();
-                var procedureDeclaration = new ProcedureDeclaration(procedureName, blockNode);
-                declarations.Add(procedureDeclaration);
-                Eat(TokenTypes.Semi);
-            }
-
             return declarations;
         }
 

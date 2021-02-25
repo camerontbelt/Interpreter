@@ -1,4 +1,5 @@
 ﻿using Interpreter.Core;
+using Interpreter.SemanticAnalyzer;
 using NUnit.Framework;
 
 namespace Interpreter.Test
@@ -24,7 +25,7 @@ namespace Interpreter.Test
             var lexer = new Lexer.Lexer(text);
             var parser = new Parser.Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SymbolTableBuilder();
+            var symbolTableBuilder = new SemanticAnalyzer.SemanticAnalyzer();
             symbolTableBuilder.Visit(tree);
             var interpreter = new Interpreter.Interpreter();
             interpreter.Interpret(tree);
