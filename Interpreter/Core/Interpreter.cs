@@ -68,7 +68,16 @@ namespace Interpreter.Core
             {
                 VisitType(node);
             }
+            if (node.GetType() == typeof(ProcedureDeclaration))
+            {
+                VisitProcedureDeclaration(node);
+            }
             return null;
+        }
+
+        private void VisitProcedureDeclaration(object node)
+        {
+            return;
         }
 
         private void VisitType(dynamic node)

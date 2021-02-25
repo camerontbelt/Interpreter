@@ -1,4 +1,5 @@
-﻿using Interpreter.Nodes;
+﻿using System;
+using Interpreter.Nodes;
 
 namespace Interpreter.Core
 {
@@ -89,9 +90,16 @@ namespace Interpreter.Core
         {
             foreach (var declaration in node.Declarations)
             {
-                foreach (var d in declaration)
+                try
                 {
-                    Visit(d);
+                    foreach (var d in declaration)
+                    {
+                        Visit(d);
+                    }
+                }
+                finally
+                {
+                    Visit(declaration);
                 }
             }
             VisitCompound(node.CompoundStatement);
