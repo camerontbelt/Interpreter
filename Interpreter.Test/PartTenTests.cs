@@ -22,8 +22,11 @@ namespace Interpreter.Test
                         END.  {Part10AST}";
             var lexer = new Lexer(text);
             var parser = new Parser(lexer);
-            var interpreter = new Interpreter(parser);
-            interpreter.Interpret();
+            var tree = parser.Parse();
+            var symbolTableBuilder = new SymbolTableBuilder();
+            symbolTableBuilder.Visit(tree);
+            var interpreter = new Interpreter();
+            interpreter.Interpret(tree);
             var a = interpreter.GlobalScope["a"];
             var b = interpreter.GlobalScope["b"];
             var y = interpreter.GlobalScope["y"];

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Interpreter
+﻿namespace Interpreter.Nodes
 {
     public interface INode
     {
-        public object Value { get; set; }
     }
 }

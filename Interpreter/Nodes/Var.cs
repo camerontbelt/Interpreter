@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Interpreter.Nodes;
-
-namespace Interpreter
+﻿namespace Interpreter.Nodes
 {
     public class Var : AST
     {

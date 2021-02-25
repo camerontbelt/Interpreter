@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Interpreter
+namespace Interpreter.Nodes
 {
     public class Compound : AST
     {
-        public List<dynamic> Children { get; set; }
-
         public Compound()
         {
             Children = new List<dynamic>();
         }
+
+        public List<dynamic> Children { get; set; }
     }
 }
