@@ -45,10 +45,10 @@ namespace Interpreter
         {
             var result = token.ToUpper() switch
             {
-                "PROGRAM" => new Token(TokenTypes.Program, "BEGIN"),
-                "VAR" => new Token(TokenTypes.Var, "BEGIN"),
-                "INTEGER" => new Token(TokenTypes.Integer, "BEGIN"),
-                "REAL" => new Token(TokenTypes.Real, "BEGIN"),
+                "PROGRAM" => new Token(TokenTypes.Program, "PROGRAM"),
+                "VAR" => new Token(TokenTypes.Var, "VAR"),
+                "INTEGER" => new Token(TokenTypes.Integer, "INTEGER"),
+                "REAL" => new Token(TokenTypes.Real, "REAL"),
                 "BEGIN" => new Token(TokenTypes.Begin, "BEGIN"),
                 "END" => new Token(TokenTypes.End, "End"),
                 "DIV" => new Token(TokenTypes.IntegerDivide, "DIV"),
