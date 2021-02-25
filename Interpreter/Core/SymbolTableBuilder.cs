@@ -66,7 +66,7 @@ namespace Interpreter.Core
             return null;
         }
 
-        private void VisitProcedureDeclaration(object node)
+        private void VisitProcedureDeclaration(dynamic node)
         {
             return;
         }
@@ -90,16 +90,13 @@ namespace Interpreter.Core
         {
             foreach (var declaration in node.Declarations)
             {
-                try
+                if (declaration.GetType() == typeof(ProcedureDeclaration)) Visit(declaration);
+                else
                 {
                     foreach (var d in declaration)
                     {
                         Visit(d);
                     }
-                }
-                finally
-                {
-                    Visit(declaration);
                 }
             }
             VisitCompound(node.CompoundStatement);
