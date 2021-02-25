@@ -50,7 +50,7 @@ namespace Interpreter.Test
             var lexer = new Lexer(text);
             var parser = new Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SymbolTableBuilder();
+            var symbolTableBuilder = new SemanticAnalyzer();
             symbolTableBuilder.Visit(tree);
             var a = symbolTableBuilder.SymbolTable;
         }
@@ -68,7 +68,7 @@ namespace Interpreter.Test
             var lexer = new Lexer(text);
             var parser = new Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SymbolTableBuilder();
+            var symbolTableBuilder = new SemanticAnalyzer();
             symbolTableBuilder.Visit(tree);
 
         }
@@ -87,7 +87,7 @@ namespace Interpreter.Test
             var lexer = new Lexer(text);
             var parser = new Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SymbolTableBuilder();
+            var symbolTableBuilder = new SemanticAnalyzer();
             symbolTableBuilder.Visit(tree);
 
         }
@@ -110,7 +110,7 @@ namespace Interpreter.Test
             var lexer = new Lexer(text);
             var parser = new Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SymbolTableBuilder();
+            var symbolTableBuilder = new SemanticAnalyzer();
             symbolTableBuilder.Visit(tree);
             var interpreter = new Core.Interpreter();
             interpreter.Interpret(tree);

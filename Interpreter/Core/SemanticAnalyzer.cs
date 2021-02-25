@@ -3,11 +3,11 @@ using Interpreter.Nodes;
 
 namespace Interpreter.Core
 {
-    public class SymbolTableBuilder : INodeVisitor
+    public class SemanticAnalyzer : INodeVisitor
     {
         public SymbolTable SymbolTable { get; set; }
 
-        public SymbolTableBuilder()
+        public SemanticAnalyzer()
         {
             SymbolTable = new SymbolTable();
         }
