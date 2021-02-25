@@ -29,5 +29,6 @@ namespace Interpreter
         public static string FloatDivide = "FLOAT_DIV";
         public static string Colon = "COLON";
         public static string Comma = "COMMA";
+        public static string Procedure = "PROCEDURE";
     }
 }

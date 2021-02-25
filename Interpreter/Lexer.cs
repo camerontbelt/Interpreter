@@ -46,6 +46,7 @@ namespace Interpreter
             var result = token.ToUpper() switch
             {
                 "PROGRAM" => new Token(TokenTypes.Program, "PROGRAM"),
+                "PROCEDURE" => new Token(TokenTypes.Procedure, "PROCEDURE"),
                 "VAR" => new Token(TokenTypes.Var, "VAR"),
                 "INTEGER" => new Token(TokenTypes.Integer, "INTEGER"),
                 "REAL" => new Token(TokenTypes.Real, "REAL"),
