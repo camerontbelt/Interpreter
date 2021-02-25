@@ -131,12 +131,26 @@ namespace Interpreter.Core
         private dynamic Declarations()
         {
             var declarations = new List<dynamic>();
-            if (_currentToken.Type != TokenTypes.Var) return declarations;
-            Eat(TokenTypes.Var);
-            while (_currentToken.Type == TokenTypes.Id)
+            if (_currentToken.Type == TokenTypes.Var)
             {
-                var varDeclaration = VariableDeclaration();
-                declarations.Add(varDeclaration);
+                Eat(TokenTypes.Var);
+                while (_currentToken.Type == TokenTypes.Id)
+                {
+                    var varDeclaration = VariableDeclaration();
+                    declarations.Add(varDeclaration);
+                    Eat(TokenTypes.Semi);
+                }
+            }
+
+            while (_currentToken.Type == TokenTypes.Procedure)
+            {
+                Eat(TokenTypes.Procedure);
+                var procedureName = _currentToken.Value;
+                Eat(TokenTypes.Id);
+                Eat(TokenTypes.Semi);
+                var blockNode = Block();
+                var procedureDeclaration = new ProcedureDeclaration(procedureName, blockNode);
+                declarations.Add(procedureDeclaration);
                 Eat(TokenTypes.Semi);
             }
 
