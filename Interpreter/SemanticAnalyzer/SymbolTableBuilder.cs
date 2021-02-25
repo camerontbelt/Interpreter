@@ -1,13 +1,14 @@
 ﻿using System;
 using Interpreter.Nodes;
+using Interpreter.Symbols;
 
 namespace Interpreter.Core
 {
-    public class SemanticAnalyzer : INodeVisitor
+    public class SymbolTableBuilder : INodeVisitor
     {
         public SymbolTable SymbolTable { get; set; }
 
-        public SemanticAnalyzer()
+        public SymbolTableBuilder()
         {
             SymbolTable = new SymbolTable();
         }

@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Interpreter.Nodes;
+using System;
 using System.Collections.Generic;
-using Interpreter.Nodes;
 using Type = Interpreter.Nodes.Type;
 
-namespace Interpreter.Core
+namespace Interpreter.Parser
 {
     public class Parser
     {
-        private readonly Lexer _lexer;
+        private readonly Lexer.Lexer _lexer;
         private Token _currentToken;
 
         public static object Default { get; internal set; }
 
-        public Parser(Lexer lexer)
+        public Parser(Lexer.Lexer lexer)
         {
             _lexer = lexer;
             _currentToken = _lexer.GetNextToken();

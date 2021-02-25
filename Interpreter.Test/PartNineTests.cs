@@ -9,7 +9,7 @@ namespace Interpreter.Test
         [Test]
         public void Part9()
         {
-            var lexer = new Lexer("BEGIN a := 2; END.");
+            var lexer = new Lexer.Lexer("BEGIN a := 2; END.");
             var beginToken = lexer.GetNextToken();
             var idToken = lexer.GetNextToken();
             var assignToken = lexer.GetNextToken();
@@ -24,12 +24,12 @@ namespace Interpreter.Test
         {
 
             var text ="BEGIN BEGIN number:= 2; a:= number; b:= 10 * a + 10 * number / 4; c:= a - -b END; x:= 11; END.";
-            var lexer = new Lexer(text);
-            var parser = new Parser(lexer);
+            var lexer = new Lexer.Lexer(text);
+            var parser = new Parser.Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SemanticAnalyzer();
+            var symbolTableBuilder = new SymbolTableBuilder();
             symbolTableBuilder.Visit(tree);
-            var interpreter = new Core.Interpreter();
+            var interpreter = new Interpreter.Interpreter();
             interpreter.Interpret(tree);
             var a = interpreter.GlobalScope["a"];
             var b = interpreter.GlobalScope["b"];
@@ -57,12 +57,12 @@ namespace Interpreter.Test
 
                             x := 11;
                         END.";
-            var lexer = new Lexer(text);
-            var parser = new Parser(lexer);
+            var lexer = new Lexer.Lexer(text);
+            var parser = new Parser.Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SemanticAnalyzer();
+            var symbolTableBuilder = new SymbolTableBuilder();
             symbolTableBuilder.Visit(tree);
-            var interpreter = new Core.Interpreter();
+            var interpreter = new Interpreter.Interpreter();
             interpreter.Interpret(tree);
             var a = interpreter.GlobalScope["a"];
             var b = interpreter.GlobalScope["b"];
@@ -90,12 +90,12 @@ namespace Interpreter.Test
 
                             x := 11;
                         END.";
-            var lexer = new Lexer(text);
-            var parser = new Parser(lexer);
+            var lexer = new Lexer.Lexer(text);
+            var parser = new Parser.Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SemanticAnalyzer();
+            var symbolTableBuilder = new SymbolTableBuilder();
             symbolTableBuilder.Visit(tree);
-            var interpreter = new Core.Interpreter();
+            var interpreter = new Interpreter.Interpreter();
             interpreter.Interpret(tree);
             var a = interpreter.GlobalScope["a"];
             var b = interpreter.GlobalScope["b"];
@@ -123,12 +123,12 @@ namespace Interpreter.Test
 
                             x := 11;
                         END.";
-            var lexer = new Lexer(text);
-            var parser = new Parser(lexer);
+            var lexer = new Lexer.Lexer(text);
+            var parser = new Parser.Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SemanticAnalyzer();
+            var symbolTableBuilder = new SymbolTableBuilder();
             symbolTableBuilder.Visit(tree);
-            var interpreter = new Core.Interpreter();
+            var interpreter = new Interpreter.Interpreter();
             interpreter.Interpret(tree);
             var a = interpreter.GlobalScope["a"];
             var b = interpreter.GlobalScope["b"];

@@ -1,5 +1,6 @@
 ﻿using System;
 using Interpreter.Core;
+using Interpreter.Symbols;
 using NUnit.Framework;
 
 namespace Interpreter.Test
@@ -47,10 +48,10 @@ namespace Interpreter.Test
                             y: REAL;
                         BEGIN
                         END.";
-            var lexer = new Lexer(text);
-            var parser = new Parser(lexer);
+            var lexer = new Lexer.Lexer(text);
+            var parser = new Parser.Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SemanticAnalyzer();
+            var symbolTableBuilder = new SymbolTableBuilder();
             symbolTableBuilder.Visit(tree);
             var a = symbolTableBuilder.SymbolTable;
         }
@@ -65,10 +66,10 @@ namespace Interpreter.Test
                         BEGIN
                            a := 2 + b;
                         END.";
-            var lexer = new Lexer(text);
-            var parser = new Parser(lexer);
+            var lexer = new Lexer.Lexer(text);
+            var parser = new Parser.Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SemanticAnalyzer();
+            var symbolTableBuilder = new SymbolTableBuilder();
             symbolTableBuilder.Visit(tree);
 
         }
@@ -84,10 +85,10 @@ namespace Interpreter.Test
                            b := 1;
                            a := b + 2;
                         END.";
-            var lexer = new Lexer(text);
-            var parser = new Parser(lexer);
+            var lexer = new Lexer.Lexer(text);
+            var parser = new Parser.Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SemanticAnalyzer();
+            var symbolTableBuilder = new SymbolTableBuilder();
             symbolTableBuilder.Visit(tree);
 
         }
@@ -107,12 +108,12 @@ namespace Interpreter.Test
                            b := 10 * a + 10 * number DIV 4;
                            y := 20 / 7 + 3.14
                         END.  {Part11}";
-            var lexer = new Lexer(text);
-            var parser = new Parser(lexer);
+            var lexer = new Lexer.Lexer(text);
+            var parser = new Parser.Parser(lexer);
             var tree = parser.Parse();
-            var symbolTableBuilder = new SemanticAnalyzer();
+            var symbolTableBuilder = new SymbolTableBuilder();
             symbolTableBuilder.Visit(tree);
-            var interpreter = new Core.Interpreter();
+            var interpreter = new Interpreter.Interpreter();
             interpreter.Interpret(tree);
             var a = interpreter.GlobalScope["a"];
             var number = interpreter.GlobalScope["number"];

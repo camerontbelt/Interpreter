@@ -1,7 +1,7 @@
 ﻿using System;
 using Interpreter.Nodes;
 
-namespace Interpreter.Core
+namespace Interpreter.Lexer
 {
     public class Lexer
     {
