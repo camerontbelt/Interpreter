@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Interpreter.Core;
 using Interpreter.Nodes;
 using Type = Interpreter.Nodes.Type;
 
-namespace Interpreter.Core
+namespace Interpreter.Interpreter
 {
     public class Interpreter : INodeVisitor
     {

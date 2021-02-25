@@ -1,7 +1,7 @@
 ﻿using System;
 using Interpreter.Nodes;
 
-namespace Interpreter.Core
+namespace Interpreter.Lexer
 {
     public class Lexer
     {
@@ -24,7 +24,7 @@ namespace Interpreter.Core
 
         public void Error()
         {
-            throw new Exception("Error parsing input");
+            throw new Exception("Lexer - Error parsing input");
         }
 
         public dynamic Id()

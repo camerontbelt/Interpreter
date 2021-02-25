@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Interpreter.Core;
 using Interpreter.Nodes;
+using Interpreter.Symbols;
 
-namespace Interpreter.Core
+namespace Interpreter.SemanticAnalyzer
 {
-    public class SymbolTableBuilder : INodeVisitor
+    public class SemanticAnalyzer : INodeVisitor
     {
         public SymbolTable SymbolTable { get; set; }
 
-        public SymbolTableBuilder()
+        public SemanticAnalyzer()
         {
             SymbolTable = new SymbolTable();
         }
@@ -83,7 +84,7 @@ namespace Interpreter.Core
         {
             var varName = node.Value;
             var varSymbol = SymbolTable.Lookup(varName);
-            if (varSymbol == null) throw Exceptions.NameError(varName);
+            if (varSymbol == null) throw Exceptions.NotFound(varName);
         }
 
         private void VisitBlock(dynamic node)
@@ -141,6 +142,8 @@ namespace Interpreter.Core
             var typeSymbol = SymbolTable.Lookup(typeName.ToString());
             var varName = node.VarNode.Value;
             var varSymbol = new VarSymbol(varName, typeSymbol);
+            if (typeSymbol == null) Exceptions.NotFound(varName);
+            if (SymbolTable.Lookup(varName) != null) Exceptions.Duplicate(varName);
             SymbolTable.Define(varSymbol);
         }
     }
