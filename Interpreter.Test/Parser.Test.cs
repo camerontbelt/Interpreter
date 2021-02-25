@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Interpreter.Core;
+using NUnit.Framework;
 
 namespace Interpreter.Test
 {

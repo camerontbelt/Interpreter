@@ -1,6 +1,7 @@
-﻿using Interpreter.Nodes;
+﻿using System;
+using Interpreter.Nodes;
 
-namespace Interpreter
+namespace Interpreter.Core
 {
     public class SymbolTableBuilder : INodeVisitor
     {
@@ -57,8 +58,17 @@ namespace Interpreter
             {
                 VisitVarDeclaration(node);
             }
+            if (node.GetType() == typeof(ProcedureDeclaration))
+            {
+                VisitProcedureDeclaration(node);
+            }
 
             return null;
+        }
+
+        private void VisitProcedureDeclaration(dynamic node)
+        {
+            return;
         }
 
         private void VisitAssign(dynamic node)
@@ -80,9 +90,13 @@ namespace Interpreter
         {
             foreach (var declaration in node.Declarations)
             {
-                foreach (var d in declaration)
+                if (declaration.GetType() == typeof(ProcedureDeclaration)) Visit(declaration);
+                else
                 {
-                    Visit(d);
+                    foreach (var d in declaration)
+                    {
+                        Visit(d);
+                    }
                 }
             }
             VisitCompound(node.CompoundStatement);

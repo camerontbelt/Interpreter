@@ -1,9 +1,9 @@
-﻿using Interpreter.Nodes;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Interpreter.Nodes;
 using Type = Interpreter.Nodes.Type;
 
-namespace Interpreter
+namespace Interpreter.Core
 {
     public class Interpreter : INodeVisitor
     {
@@ -68,7 +68,16 @@ namespace Interpreter
             {
                 VisitType(node);
             }
+            if (node.GetType() == typeof(ProcedureDeclaration))
+            {
+                VisitProcedureDeclaration(node);
+            }
             return null;
+        }
+
+        private void VisitProcedureDeclaration(object node)
+        {
+            return;
         }
 
         private void VisitType(dynamic node)

@@ -29,13 +29,11 @@ namespace Interpreter
 
         public void Define(Symbol symbol)
         {
-            Console.WriteLine($"Define: {symbol}");
             Symbols.Add(symbol);
         }
 
         public Symbol Lookup(string name)
         {
-            Console.WriteLine($"Lookup: {name}");
             return Symbols.FirstOrDefault(s => s.Name == name);
         }
     }
