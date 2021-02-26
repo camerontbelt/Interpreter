@@ -5,7 +5,7 @@ using Interpreter.Nodes.Declaration;
 using Interpreter.Nodes.Statement;
 using Type = Interpreter.Nodes.Type;
 
-namespace Interpreter.Parser
+namespace pascal.Parser
 {
     public class Parser
     {

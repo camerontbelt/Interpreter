@@ -23,7 +23,7 @@ namespace pascal.Interpreter
 
         public dynamic Visit(dynamic node)
         {
-            if (node.GetType() == typeof(global::Interpreter.Nodes.Program))
+            if (node.GetType() == typeof(global::pascal.Nodes.Program))
             {
                 VisitProgram(node);
             }
@@ -102,7 +102,7 @@ namespace pascal.Interpreter
             VisitCompound(node.CompoundStatement);
         }
 
-        private void VisitProgram(global::Interpreter.Nodes.Program node)
+        private void VisitProgram(global::pascal.Nodes.Program node)
         {
             Visit(node.Block);
         }

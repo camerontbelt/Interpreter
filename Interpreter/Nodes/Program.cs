@@ -1,4 +1,6 @@
-﻿namespace Interpreter.Nodes
+﻿using Interpreter.Nodes;
+
+namespace pascal.Nodes
 {
     public class Program : AST
     {

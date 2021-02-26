@@ -1,5 +1,6 @@
 ﻿using Interpreter.Core;
 using NUnit.Framework;
+using pascal.Lexer;
 
 namespace Interpreter.Test
 {
@@ -12,7 +13,7 @@ namespace Interpreter.Test
             var text = @"BEGIN {this is a comment}
                                 number := 2;
                         END.";
-            var lexer = new Lexer.Lexer(text);
+            var lexer = new Lexer(text);
         }
     }
 }

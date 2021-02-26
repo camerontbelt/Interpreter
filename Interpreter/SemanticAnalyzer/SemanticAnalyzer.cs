@@ -2,9 +2,10 @@
 using Interpreter.Nodes;
 using Interpreter.Nodes.Declaration;
 using Interpreter.Nodes.Statement;
+using Interpreter.SemanticAnalyzer;
 using Interpreter.Symbols;
 
-namespace Interpreter.SemanticAnalyzer
+namespace pascal.SemanticAnalyzer
 {
     public class SemanticAnalyzer : INodeVisitor
     {
