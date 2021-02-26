@@ -1,6 +1,6 @@
-﻿namespace Interpreter.Nodes
+﻿namespace Interpreter.Nodes.Declaration
 {
-    public class VarDeclaration : AST
+    public class VarDeclaration : Declaration
     {
         public dynamic VarNode { get; }
         public dynamic TypeNode { get; }

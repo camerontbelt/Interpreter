@@ -8,7 +8,7 @@
             Value = token.Value;
         }
 
-        public dynamic Value { get; set; }
+        public string Value { get; set; }
         public Token Token { get; set; }
     }
 }

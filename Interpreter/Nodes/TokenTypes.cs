@@ -26,5 +26,8 @@
         public static string Colon = "COLON";
         public static string Comma = "COMMA";
         public static string Procedure = "PROCEDURE";
+        public static string For = "FOR";
+        public static string To = "TO";
+        public static string Do = "DO";
     }
 }

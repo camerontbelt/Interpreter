@@ -53,6 +53,9 @@ namespace Interpreter.Lexer
                 "BEGIN" => new Token(TokenTypes.Begin, "BEGIN"),
                 "END" => new Token(TokenTypes.End, "End"),
                 "DIV" => new Token(TokenTypes.IntegerDivide, "DIV"),
+                "FOR" => new Token(TokenTypes.For, "FOR"),
+                "TO" => new Token(TokenTypes.To, "TO"),
+                "DO" => new Token(TokenTypes.Do, "DO"),
                 _ => new Token(TokenTypes.Id, token)
             };
 

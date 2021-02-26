@@ -30,7 +30,7 @@ END.  {Part12}
 ~~~
 
 Listing 2 - Example program
-```
+``` pascal
 PROGRAM Part11;
 VAR
    number : INTEGER;

@@ -2,10 +2,10 @@
 {
     public class Program : AST
     {
-        public dynamic Name { get; }
-        public dynamic Block { get; }
+        public string Name { get; }
+        public Block Block { get; }
 
-        public Program(dynamic name, dynamic block)
+        public Program(string name, Block block)
         {
             Name = name;
             Block = block;

@@ -1,5 +1,7 @@
 ﻿using Interpreter.Core;
 using Interpreter.Nodes;
+using Interpreter.Nodes.Declaration;
+using Interpreter.Nodes.Statement;
 using Interpreter.Symbols;
 
 namespace Interpreter.SemanticAnalyzer
@@ -35,9 +37,9 @@ namespace Interpreter.SemanticAnalyzer
             {
                 VisitCompound(node);
             }
-            if (node.GetType() == typeof(NoOp))
+            if (node.GetType() == typeof(NoOp) || node.GetType() == typeof(EmptyStatement))
             {
-                VisitNoOp(node);
+                VisitNoOp();
             }
             if (node.GetType() == typeof(Nodes.Program))
             {
@@ -67,12 +69,12 @@ namespace Interpreter.SemanticAnalyzer
             return null;
         }
 
-        private void VisitProcedureDeclaration(dynamic node)
+        private void VisitProcedureDeclaration(ProcedureDeclaration node)
         {
             return;
         }
 
-        private void VisitAssign(dynamic node)
+        private void VisitAssign(Assign node)
         {
             var varName = node.Left.Value;
             var varSymbol = SymbolTable.Lookup(varName);
@@ -80,35 +82,32 @@ namespace Interpreter.SemanticAnalyzer
             Visit(node.Right);
         }
 
-        private void VisitVar(dynamic node)
+        private void VisitVar(Var node)
         {
             var varName = node.Value;
             var varSymbol = SymbolTable.Lookup(varName);
             if (varSymbol == null) throw Exceptions.NotFound(varName);
         }
 
-        private void VisitBlock(dynamic node)
+        private void VisitBlock(Block node)
         {
             foreach (var declaration in node.Declarations)
             {
                 if (declaration.GetType() == typeof(ProcedureDeclaration)) Visit(declaration);
                 else
                 {
-                    foreach (var d in declaration)
-                    {
-                        Visit(d);
-                    }
+                    Visit(declaration);
                 }
             }
             VisitCompound(node.CompoundStatement);
         }
 
-        private void VisitProgram(dynamic node)
+        private void VisitProgram(Nodes.Program node)
         {
             Visit(node.Block);
         }
 
-        private void VisitCompound(dynamic node)
+        private void VisitCompound(Compound node)
         {
             foreach (var child in node.Children)
             {
@@ -116,27 +115,27 @@ namespace Interpreter.SemanticAnalyzer
             }
         }
 
-        private void VisitBinOp(dynamic node)
+        private void VisitBinOp(BinOp node)
         {
             Visit(node.Left);
             Visit(node.Right);
         }
 
-        private void VisitNum(dynamic node)
+        private void VisitNum(Num node)
         {
             return;
         }
 
-        private void VisitUnaryOp(dynamic node)
+        private void VisitUnaryOp(UnaryOp node)
         {
             Visit(node.Expression);
         }
 
-        private void VisitNoOp(dynamic node)
+        private void VisitNoOp()
         {
         }
 
-        private void VisitVarDeclaration(dynamic node)
+        private void VisitVarDeclaration(VarDeclaration node)
         {
             var typeName = node.TypeNode.Value;
             var typeSymbol = SymbolTable.Lookup(typeName.ToString());

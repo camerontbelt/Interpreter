@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using Interpreter.Core;
 using Interpreter.Nodes;
+using Interpreter.Nodes.Declaration;
+using Interpreter.Nodes.Statement;
 using Type = Interpreter.Nodes.Type;
 
 namespace Interpreter.Interpreter
 {
     public class Interpreter : INodeVisitor
     {
-        public Dictionary<dynamic, dynamic> GlobalScope = new Dictionary<dynamic, dynamic>();
+        public Dictionary<string, dynamic> GlobalScope = new Dictionary<string, dynamic>();
 
         public Interpreter()
         {
@@ -21,6 +23,30 @@ namespace Interpreter.Interpreter
 
         public dynamic Visit(dynamic node)
         {
+            if (node.GetType() == typeof(Nodes.Program))
+            {
+                VisitProgram(node);
+            }
+            if (node.GetType() == typeof(Block))
+            {
+                VisitBlock(node);
+            }
+            if (node.GetType() == typeof(Compound))
+            {
+                VisitCompound(node);
+            }
+            if (node.GetType() == typeof(VarDeclaration))
+            {
+                VisitVarDeclaration(node);
+            }
+            if (node.GetType() == typeof(ProcedureDeclaration))
+            {
+                VisitProcedureDeclaration(node);
+            }
+            if (node.GetType() == typeof(Assign))
+            {
+                VisitAssign(node);
+            }
             if (node.GetType() == typeof(Token))
             {
                 return node.GetValue();
@@ -37,61 +63,37 @@ namespace Interpreter.Interpreter
             {
                 return VisitNum(node);
             }
-            if (node.GetType() == typeof(Compound))
-            {
-                VisitCompound(node);
-            }
-            if (node.GetType() == typeof(Assign))
-            {
-                VisitAssign(node);
-            }
             if (node.GetType() == typeof(Var))
             {
                 return VisitVar(node);
-            }
-            if (node.GetType() == typeof(NoOp))
-            {
-                VisitNoOp(node);
-            }
-            if (node.GetType() == typeof(Nodes.Program))
-            {
-                VisitProgram(node);
-            }
-            if (node.GetType() == typeof(Block))
-            {
-                VisitBlock(node);
-            }
-            if (node.GetType() == typeof(VarDeclaration))
-            {
-                VisitVarDeclaration(node);
             }
             if (node.GetType() == typeof(Type))
             {
                 VisitType(node);
             }
-            if (node.GetType() == typeof(ProcedureDeclaration))
+            if (node.GetType() == typeof(NoOp) || node.GetType() == typeof(EmptyStatement))
             {
-                VisitProcedureDeclaration(node);
+                VisitNoOp();
             }
             return null;
         }
 
-        private void VisitProcedureDeclaration(object node)
+        private void VisitProcedureDeclaration(ProcedureDeclaration node)
         {
             return;
         }
 
-        private void VisitType(dynamic node)
+        private void VisitType(Type node)
         {
             return;
         }
 
-        private void VisitVarDeclaration(dynamic node)
+        private void VisitVarDeclaration(VarDeclaration node)
         {
             return;
         }
 
-        private void VisitBlock(dynamic node)
+        private void VisitBlock(Block node)
         {
             foreach (var declaration in node.Declarations)
             {
@@ -100,12 +102,12 @@ namespace Interpreter.Interpreter
             VisitCompound(node.CompoundStatement);
         }
 
-        private void VisitProgram(dynamic node)
+        private void VisitProgram(Nodes.Program node)
         {
             Visit(node.Block);
         }
 
-        private void VisitCompound(dynamic node)
+        private void VisitCompound(Compound node)
         {
             foreach (var child in node.Children)
             {
@@ -113,13 +115,13 @@ namespace Interpreter.Interpreter
             }
         }
 
-        private void VisitAssign(dynamic node)
+        private void VisitAssign(Assign node)
         {
             var varName = node.Left.Value;
             GlobalScope.Add(varName.ToLower(), Visit(node.Right));
         }
 
-        private dynamic VisitVar(dynamic node)
+        private dynamic VisitVar(Var node)
         {
             var varName = node.Value;
             var value = GlobalScope[varName.ToLower()];
@@ -133,16 +135,16 @@ namespace Interpreter.Interpreter
             }
         }
 
-        private void VisitNoOp(dynamic node)
+        private void VisitNoOp()
         {
         }
 
-        private dynamic VisitNum(dynamic node)
+        private dynamic VisitNum(Num node)
         {
             return node.Value;
         }
 
-        private dynamic VisitBinOp(dynamic node)
+        private dynamic VisitBinOp(BinOp node)
         {
             if (node.Token.Type == TokenTypes.Addition)
             {
@@ -170,7 +172,7 @@ namespace Interpreter.Interpreter
             return null;
         }
 
-        private dynamic VisitUnaryOp(dynamic node)
+        private dynamic VisitUnaryOp(UnaryOp node)
         {
             if (node.Op.Type == TokenTypes.Addition)
             {

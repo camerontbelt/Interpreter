@@ -2,7 +2,7 @@
 
 namespace Interpreter.Nodes
 {
-    public class Token
+    public class Token : AST
     {
         public string Type { get; }
         public dynamic Value { get; }

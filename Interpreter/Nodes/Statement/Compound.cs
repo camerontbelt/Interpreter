@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Interpreter.Nodes
+namespace Interpreter.Nodes.Statement
 {
-    public class Compound : AST
+    public class Compound : Statement
     {
         public Compound()
         {

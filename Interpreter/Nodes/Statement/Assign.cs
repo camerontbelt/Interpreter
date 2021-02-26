@@ -1,13 +1,13 @@
-﻿namespace Interpreter.Nodes
+﻿namespace Interpreter.Nodes.Statement
 {
-    public class Assign : AST
+    public class Assign : Statement
     {
         public readonly dynamic Left;
         public readonly dynamic Op;
         public readonly dynamic Right;
-        public readonly dynamic Token;
+        public readonly Token Token;
 
-        public Assign(dynamic left, dynamic op, dynamic right)
+        public Assign(dynamic left, Token op, dynamic right)
         {
             Left = left;
             Op = op.Value;
