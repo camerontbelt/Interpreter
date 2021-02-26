@@ -6,7 +6,7 @@ using Interpreter.Nodes.Declaration;
 using Interpreter.Nodes.Statement;
 using Type = Interpreter.Nodes.Type;
 
-namespace Interpreter.Interpreter
+namespace pascal.Interpreter
 {
     public class Interpreter : INodeVisitor
     {
@@ -23,7 +23,7 @@ namespace Interpreter.Interpreter
 
         public dynamic Visit(dynamic node)
         {
-            if (node.GetType() == typeof(Nodes.Program))
+            if (node.GetType() == typeof(global::Interpreter.Nodes.Program))
             {
                 VisitProgram(node);
             }
@@ -102,7 +102,7 @@ namespace Interpreter.Interpreter
             VisitCompound(node.CompoundStatement);
         }
 
-        private void VisitProgram(Nodes.Program node)
+        private void VisitProgram(global::Interpreter.Nodes.Program node)
         {
             Visit(node.Block);
         }

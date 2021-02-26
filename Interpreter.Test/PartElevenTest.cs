@@ -114,7 +114,7 @@ namespace Interpreter.Test
             var tree = parser.Parse();
             var symbolTableBuilder = new SemanticAnalyzer.SemanticAnalyzer();
             symbolTableBuilder.Visit(tree);
-            var interpreter = new Interpreter.Interpreter();
+            var interpreter = new pascal.Interpreter.Interpreter();
             interpreter.Interpret(tree);
             var a = interpreter.GlobalScope["a"];
             var number = interpreter.GlobalScope["number"];
