@@ -56,6 +56,7 @@ namespace Interpreter.Lexer
                 "FOR" => new Token(TokenTypes.For, "FOR"),
                 "TO" => new Token(TokenTypes.To, "TO"),
                 "DO" => new Token(TokenTypes.Do, "DO"),
+                "WRITELN" => new Token(TokenTypes.Writeln, "WRITELN"),
                 _ => new Token(TokenTypes.Id, token)
             };
 

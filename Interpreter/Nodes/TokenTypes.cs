@@ -29,5 +29,6 @@
         public static string For = "FOR";
         public static string To = "TO";
         public static string Do = "DO";
+        public static string Writeln = "WRITELN";
     }
 }
