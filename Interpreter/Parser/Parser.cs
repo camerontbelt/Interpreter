@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Interpreter.Nodes;
 using Interpreter.Nodes.Declaration;
 using Interpreter.Nodes.Statement;
+using pascal.Nodes;
+using pascal.Nodes.Statement;
 using Type = Interpreter.Nodes.Type;
 
 namespace pascal.Parser
@@ -27,8 +29,24 @@ namespace pascal.Parser
 
         private Nodes.Program Program()
         {
-            Eat(TokenTypes.Program);
-            var varNode = Variable();
+            try
+            {
+                Eat(TokenTypes.Program);
+            }
+            catch
+            {
+                throw new Exception("Missing 'program' definition.");
+            }
+
+            Var varNode;
+            try
+            {
+                varNode = Variable();
+            }
+            catch
+            {
+                throw new Exception("Missing program name.");
+            }
             var programName = varNode.Value;
             Eat(TokenTypes.Semi);
             var blockNode = Block();
@@ -224,28 +242,39 @@ namespace pascal.Parser
                 node = AssignmentStatement();
             else if (_currentToken.Type == TokenTypes.For)
                 node = ForStatement();
+            else if (_currentToken.Type == TokenTypes.Writeln)
+                node = WriteLineStatement();
             else
                 node = new EmptyStatement();
 
             return node;
         }
 
+        private Statement WriteLineStatement()
+        {
+            Eat(TokenTypes.Writeln);
+            Eat(TokenTypes.LeftParen);
+            var statement = new WriteLine(Variable());
+            Eat(TokenTypes.RightParen);
+            return statement;
+        }
+
         private For ForStatement()
         {
             Eat(TokenTypes.For);
-            var node = AssignmentStatement();
+            var initialAssignment = AssignmentStatement();
             Eat(TokenTypes.To);
-            FinalExpression();
-            Eat(TokenTypes.IntegerConst);
+            var finalConst = FinalExpression();
             Eat(TokenTypes.Do);
-            Statement();
-            Eat(TokenTypes.Semi);
-            return new For();
+            var statement = Statement();
+            return new For(initialAssignment, finalConst, statement);
         }
 
         private Var FinalExpression()
         {
-            return new Var(_currentToken);
+            var node = new Var(_currentToken);
+            Eat(TokenTypes.IntegerConst);
+            return node;
         }
 
         private Assign AssignmentStatement()

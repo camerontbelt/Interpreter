@@ -1,4 +1,4 @@
-﻿namespace Interpreter.Nodes
+﻿namespace pascal.Nodes
 {
     public class TokenTypes
     {

@@ -1,4 +1,6 @@
-﻿namespace Interpreter.Nodes
+﻿using Interpreter.Nodes;
+
+namespace pascal.Nodes
 {
     public class Var : AST
     {
@@ -8,7 +10,7 @@
             Value = token.Value;
         }
 
-        public string Value { get; set; }
+        public dynamic Value { get; set; }
         public Token Token { get; set; }
     }
 }

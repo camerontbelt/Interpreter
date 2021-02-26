@@ -1,5 +1,6 @@
 ﻿using System;
 using Interpreter.Nodes;
+using pascal.Nodes;
 
 namespace pascal.Lexer
 {

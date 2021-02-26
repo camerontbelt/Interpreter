@@ -4,6 +4,8 @@ using Interpreter.Nodes.Declaration;
 using Interpreter.Nodes.Statement;
 using Interpreter.SemanticAnalyzer;
 using Interpreter.Symbols;
+using pascal.Nodes;
+using pascal.Nodes.Statement;
 
 namespace pascal.SemanticAnalyzer
 {

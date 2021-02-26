@@ -1,6 +1,8 @@
-﻿namespace Interpreter.Nodes.Statement
+﻿using Interpreter.Nodes;
+
+namespace pascal.Nodes.Statement
 {
-    public class Assign : Statement
+    public class Assign : global::Interpreter.Nodes.Statement.Statement
     {
         public readonly dynamic Left;
         public readonly dynamic Op;

@@ -4,6 +4,8 @@ using Interpreter.Core;
 using Interpreter.Nodes;
 using Interpreter.Nodes.Declaration;
 using Interpreter.Nodes.Statement;
+using pascal.Nodes;
+using pascal.Nodes.Statement;
 using Type = Interpreter.Nodes.Type;
 
 namespace pascal.Interpreter
@@ -71,11 +73,33 @@ namespace pascal.Interpreter
             {
                 VisitType(node);
             }
+            if (node.GetType() == typeof(For))
+            {
+                VisitFor(node);
+            }
+            if (node.GetType() == typeof(WriteLine))
+            {
+                VisitWriteLine(node);
+            }
             if (node.GetType() == typeof(NoOp) || node.GetType() == typeof(EmptyStatement))
             {
                 VisitNoOp();
             }
             return null;
+        }
+
+        private void VisitWriteLine(WriteLine node)
+        {
+            var line = GlobalScope[node.String.ToLower()];
+            Console.WriteLine(line.ToString());
+        }
+
+        private void VisitFor(For node)
+        {
+            for (int i = node.Initial.Right.Value; i <= node.Final.Value; i++)
+            {
+                Visit(node.Statement);
+            }
         }
 
         private void VisitProcedureDeclaration(ProcedureDeclaration node)
