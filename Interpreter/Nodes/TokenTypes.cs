@@ -30,5 +30,6 @@
         public static string To = "TO";
         public static string Do = "DO";
         public static string Writeln = "WRITELN";
+        public static string String = "STRING";
     }
 }

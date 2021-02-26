@@ -254,7 +254,8 @@ namespace pascal.Parser
         {
             Eat(TokenTypes.Writeln);
             Eat(TokenTypes.LeftParen);
-            var statement = new WriteLine(Variable());
+            var statement = new WriteLine(_currentToken);
+            Eat(_currentToken.Type);
             Eat(TokenTypes.RightParen);
             return statement;
         }

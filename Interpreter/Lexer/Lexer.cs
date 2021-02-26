@@ -201,6 +201,9 @@ namespace pascal.Lexer
                     case '.':
                         Advance();
                         return new Token(TokenTypes.Dot, ".");
+                    case '\'':
+                        var value = String();
+                        return new Token(TokenTypes.String, value);
                     default:
                         Error();
                         return null;
@@ -208,6 +211,19 @@ namespace pascal.Lexer
             }
 
             return new Token(TokenTypes.EOF, string.Empty);
+        }
+
+        public string String()
+        {
+            var result = string.Empty;
+            Advance();
+            while (CurrentChar.ToString() != "'")
+            {
+                result += CurrentChar.ToString();
+                Advance();
+            }
+            Advance();
+            return result;
         }
     }
 }

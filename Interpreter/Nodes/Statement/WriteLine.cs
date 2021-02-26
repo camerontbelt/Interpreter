@@ -1,12 +1,14 @@
-﻿namespace pascal.Nodes.Statement
+﻿using Interpreter.Nodes;
+
+namespace pascal.Nodes.Statement
 {
     public class WriteLine : global::Interpreter.Nodes.Statement.Statement
     {
-        public string String { get; }
+        public Token StringToken { get; }
 
-        public WriteLine(Var variable)
+        public WriteLine(Token variable)
         {
-            String = variable.Value.ToString();
+            StringToken = variable;
         }
     }
 }

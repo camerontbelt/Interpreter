@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Interpreter.Core;
 using Interpreter.Nodes;
 using Interpreter.Nodes.Declaration;
@@ -90,8 +91,10 @@ namespace pascal.Interpreter
 
         private void VisitWriteLine(WriteLine node)
         {
-            var line = GlobalScope[node.String.ToLower()];
-            Console.WriteLine(line.ToString());
+            var value = node.StringToken.Type == TokenTypes.Id
+                ? GlobalScope[node.StringToken.Value]
+                : node.StringToken.Value;
+            Console.WriteLine(value);
         }
 
         private void VisitFor(For node)
