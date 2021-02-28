@@ -2,6 +2,7 @@
 using System.IO;
 using CommandLine;
 using Interpreter.Core;
+using pascal.Core;
 
 namespace pascal
 {
@@ -13,7 +14,15 @@ namespace pascal
                 .ParseArguments<Options>(args)
                 .WithParsed<Options>(o =>
                 {
-                    if (!string.IsNullOrWhiteSpace(o.FilePath))
+                    if (string.IsNullOrWhiteSpace(o.FilePath)) return;
+                    if (o.Token)
+                    {
+                        var text = File.ReadAllText(o.FilePath);
+                        var lexer = new Lexer.Lexer(text);
+                        var tokens = lexer.Analyze();
+                        tokens.ForEach(Console.WriteLine);
+                    }
+                    else if(o.Interpret)
                     {
                         try
                         {

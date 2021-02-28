@@ -99,8 +99,10 @@ namespace pascal.Interpreter
 
         private void VisitFor(For node)
         {
+            Visit(node.Initial);
             for (int i = node.Initial.Right.Value; i <= node.Final.Value; i++)
             {
+                GlobalScope[node.Initial.Left.Value] = i;
                 Visit(node.Statement);
             }
         }
@@ -145,7 +147,15 @@ namespace pascal.Interpreter
         private void VisitAssign(Assign node)
         {
             var varName = node.Left.Value;
-            GlobalScope.Add(varName.ToLower(), Visit(node.Right));
+            var value = Visit(node.Right);
+            if (GlobalScope.ContainsKey(varName))
+            {
+                GlobalScope[varName] = value;
+            }
+            else
+            {
+                GlobalScope.Add(varName.ToLower(), value);
+            }
         }
 
         private dynamic VisitVar(Var node)

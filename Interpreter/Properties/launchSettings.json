@@ -2,7 +2,7 @@
   "profiles": {
     "Interpreter": {
       "commandName": "Project",
-      "commandLineArgs": "-f \"C:\\temp\\test.pas\""
+      "commandLineArgs": "-f \"C:\\temp\\test.pas\" -i"
     }
   }
 }

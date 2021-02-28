@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Interpreter.Nodes;
 using pascal.Nodes;
 
@@ -6,16 +7,28 @@ namespace pascal.Lexer
 {
     public class Lexer
     {
+        public List<Token> Tokens { get; set; }
+        private string Text { get; }
+        private int Position { get; set; }
+        private char? CurrentChar { get; set; }
+
         public Lexer(string input)
         {
             Text = input;
             Position = 0;
             CurrentChar = Text[Position];
+            Tokens = new List<Token>();
         }
 
-        private string Text { get; }
-        private int Position { get; set; }
-        private char? CurrentChar { get; set; }
+        public List<Token> Analyze()
+        {
+            Token token;
+            do
+            {
+                token = GetNextToken();
+            } while (token.Type != TokenTypes.EOF);
+            return Tokens;
+        }
 
         public char Peek()
         {
@@ -28,7 +41,7 @@ namespace pascal.Lexer
             throw new Exception("Lexer - Error parsing input");
         }
 
-        public dynamic Id()
+        public Token Id()
         {
             var result = string.Empty;
             while (CurrentChar != null && char.IsLetterOrDigit(CurrentChar.GetValueOrDefault()) ||
@@ -60,7 +73,7 @@ namespace pascal.Lexer
                 "WRITELN" => new Token(TokenTypes.Writeln, "WRITELN"),
                 _ => new Token(TokenTypes.Id, token)
             };
-
+            Tokens.Add(result);
             return result;
         }
 
@@ -111,12 +124,12 @@ namespace pascal.Lexer
             {
                 token = new Token(TokenTypes.IntegerConst, Convert.ToInt32(result));
             }
-
             return token;
         }
 
         public Token GetNextToken()
         {
+            Token token;
             while (CurrentChar != null)
             {
                 if (char.IsLetter((char) CurrentChar) || CurrentChar == '_') return Id();
@@ -128,7 +141,8 @@ namespace pascal.Lexer
 
                 if (char.IsDigit((char) CurrentChar))
                 {
-                    var token = Number();
+                    token = Number();
+                    Tokens.Add(token);
                     return token;
                 }
 
@@ -140,77 +154,97 @@ namespace pascal.Lexer
                         continue;
                     case '+':
                     {
-                        var token = new Token(TokenTypes.Addition, CurrentChar.ToString());
+                        token = new Token(TokenTypes.Addition, CurrentChar.ToString());
                         Advance();
+                        Tokens.Add(token);
                         return token;
                     }
                     case '-':
                     {
-                        var token = new Token(TokenTypes.Subtraction, CurrentChar.ToString());
+                        token = new Token(TokenTypes.Subtraction, CurrentChar.ToString());
                         Advance();
-                        return token;
+                        Tokens.Add(token);
+                            return token;
                     }
                     case '*':
                     {
-                        var token = new Token(TokenTypes.Multiply, CurrentChar.ToString());
+                        token = new Token(TokenTypes.Multiply, CurrentChar.ToString());
                         Advance();
-                        return token;
+                        Tokens.Add(token);
+                            return token;
                     }
                     case '/':
                     {
-                        var token = new Token(TokenTypes.FloatDivide, CurrentChar.ToString());
+                        token = new Token(TokenTypes.FloatDivide, CurrentChar.ToString());
                         Advance();
-                        return token;
+                        Tokens.Add(token);
+                            return token;
                     }
                     case ' ':
                     {
-                        var token = new Token(TokenTypes.Whitespace, CurrentChar.ToString());
+                        token = new Token(TokenTypes.Whitespace, CurrentChar.ToString());
                         Advance();
-                        return token;
+                        Tokens.Add(token);
+                            return token;
                     }
                     case '(':
                     {
-                        var token = new Token(TokenTypes.LeftParen, CurrentChar.ToString());
+                        token = new Token(TokenTypes.LeftParen, CurrentChar.ToString());
                         Advance();
-                        return token;
+                        Tokens.Add(token);
+                            return token;
                     }
                     case ')':
                     {
-                        var token = new Token(TokenTypes.RightParen, CurrentChar.ToString());
+                        token = new Token(TokenTypes.RightParen, CurrentChar.ToString());
                         Advance();
-                        return token;
+                        Tokens.Add(token);
+                            return token;
                     }
                     case ':':
                         if (Peek() == '=')
                         {
                             Advance();
                             Advance();
-                            return new Token(TokenTypes.Assign, ":=");
+                            token = new Token(TokenTypes.Assign, ":=");
+                            Tokens.Add(token);
+                            return token;
                         }
                         else
                         {
                             Advance();
-                            return new Token(TokenTypes.Colon, CurrentChar.ToString());
+                            token = new Token(TokenTypes.Colon, CurrentChar.ToString());
+                            Tokens.Add(token);
+                            return token;
                         }
                     case ',':
                         Advance();
-                        return new Token(TokenTypes.Comma, CurrentChar.ToString());
+                        token = new Token(TokenTypes.Comma, CurrentChar.ToString());
+                        Tokens.Add(token);
+                        return token;
                     case ';':
                         Advance();
-                        return new Token(TokenTypes.Semi, ";");
+                        token = new Token(TokenTypes.Semi, ";");
+                        Tokens.Add(token);
+                        return token;
                     case '.':
                         Advance();
-                        return new Token(TokenTypes.Dot, ".");
+                        token = new Token(TokenTypes.Dot, ".");
+                        Tokens.Add(token);
+                        return token;
                     case '\'':
                         var value = String();
-                        return new Token(TokenTypes.String, value);
+                        token = new Token(TokenTypes.String, value);
+                        Tokens.Add(token);
+                        return token;
                     default:
                         Error();
                         return null;
                 }
             }
-
-            return new Token(TokenTypes.EOF, string.Empty);
+            token = new Token(TokenTypes.EOF, string.Empty);
+            Tokens.Add(token);
+            return token;
         }
 
         public string String()

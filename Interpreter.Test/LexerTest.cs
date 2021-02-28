@@ -1,8 +1,6 @@
-﻿using Interpreter.Core;
-using NUnit.Framework;
-using pascal.Lexer;
+﻿using NUnit.Framework;
 
-namespace Interpreter.Test
+namespace pascal.Test
 {
     [TestFixture]
     public class LexerTest
@@ -13,7 +11,8 @@ namespace Interpreter.Test
             var text = @"BEGIN {this is a comment}
                                 number := 2;
                         END.";
-            var lexer = new Lexer(text);
+            var lexer = new Lexer.Lexer(text);
+            var tokens = lexer.Analyze();
         }
     }
 }
