@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Interpreter.Core;
+﻿using Interpreter.Core;
 using Interpreter.Nodes;
 using Interpreter.Nodes.Declaration;
 using Interpreter.Nodes.Statement;
 using pascal.Nodes;
 using pascal.Nodes.Statement;
+using System;
+using System.Collections.Generic;
 using Type = Interpreter.Nodes.Type;
 
 namespace pascal.Interpreter

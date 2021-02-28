@@ -30,18 +30,18 @@ namespace pascal.Lexer
             return Tokens;
         }
 
-        public char Peek()
+        private char Peek()
         {
             var peekPosition = Position + 1;
             return peekPosition > Text.Length - 1 ? char.MinValue : Text[peekPosition];
         }
 
-        public void Error()
+        private void Error()
         {
             throw new Exception("Lexer - Error parsing input");
         }
 
-        public Token Id()
+        private Token Id()
         {
             var result = string.Empty;
             while (CurrentChar != null && char.IsLetterOrDigit(CurrentChar.GetValueOrDefault()) ||
@@ -77,7 +77,7 @@ namespace pascal.Lexer
             return result;
         }
 
-        public void Advance()
+        private void Advance()
         {
             Position += 1;
             if (Position > Text.Length - 1)
@@ -86,18 +86,18 @@ namespace pascal.Lexer
                 CurrentChar = Text[Position];
         }
 
-        public void SkipWhitespace()
+        private void SkipWhitespace()
         {
             while (CurrentChar != null && string.IsNullOrWhiteSpace(CurrentChar.ToString())) Advance();
         }
 
-        public void SkipComment()
+        private void SkipComment()
         {
             while (CurrentChar != '}') Advance();
             Advance();
         }
 
-        public Token Number()
+        private Token Number()
         {
             var result = string.Empty;
             Token token;
@@ -247,7 +247,7 @@ namespace pascal.Lexer
             return token;
         }
 
-        public string String()
+        private string String()
         {
             var result = string.Empty;
             Advance();
